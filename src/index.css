@@ -1,13 +1,257 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *:before, *:after{
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body{
+  width: 100%;
+  height: 100%;
+  background-color: white ;
+}
+
+.nav-toggle{
+  width:60px;
+  height:70px;
+  position:fixed;
+  right: 0;
+  z-index: 10;
+}
+
+.nav-toggle span{
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: 0;
+  margin-top: 1.5px;
+}
+
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+  display: block;
+  width: 20px;
+  height: 5px;
+  background-color: #11dceb;
+  outline: 1px solid transparent;
+  -webkit-transition-property : background-color, -webkit-transform;
+  -moz-transition-property : background-color, -moz -transform;
+  -o-transition-property: background-color, -o-transform;
+  transition-property: background-color, transform;
+  -webkit-transition-duration : 0.3s;
+  -moz-transition-duration : 0.3s;
+  -o-transition-duration : 0.3s;
+  transition-duration: 0.3s;
+}
+.nav-toggle span::before, .nav-toggle span::after{
+  position: absolute;
+  content: '';
+}
+
+.nav-toggle span::before{
+  top:-10px;
+}
+
+.nav-toggle span::after{
+  top: 10px;
+}
+
+.nav-toggle.clicked span {
+  background-color: transparent;
+}
+
+.nav-toggle.clicked span::before{
+  -webkit-transform: translateY(10px) rotate(45deg);
+  -moz-transform: translateY(10px) rotate(45deg);
+  -ms-transform: translateY(10px) rotate(45deg);
+  -o-transform: translateY(10px) rotate(45deg);
+  transform: translateY(10px) rotate(45deg) ;
+}
+
+.nav-toggle.clicked span::after {
+  -webkit-transform : translateY(-10px) rotate(-45deg);
+  -moz-transform: translateY(-10px) rotate(-45deg);
+  -ms-transform: translateY( -10px) rotate(-45deg) ;
+  -o-transform: translateY(-10px) rotate(-45deg);
+  transform: translateY(-10px) rotate(-45deg) ;
+}
+
+.nav-toggle.clicked span:before, .nav-toggle.clicked span:after{
+  background-color: #11dceb;
+}
+
+.nav-toggle:hover{
+  cursor: pointer;
+}
+
+.nav-in{
+  background-color: #ffffff;
+  position: fixed;
+  z-index:9;
+  top:0;
+  right:0;
+  height:70px;
+  max-width: auto;
+  width: 100%;
+  padding: 10px 40px 60px 40px;
+  overflow-y: hidden;
+  transform: translateY(0);
+  transition: transform 0.3s ease-in;
+}
+.nav-out{
+  background-color: #ffffff;
+  position: fixed;
+  z-index:9;
+  top:0;
+  right:0;
+  height:70px;
+  max-width: auto;
+  width: 100%;
+  padding: 10px 40px 60px 40px;
+  overflow-y: hidden;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in;
+}
+
+.nav-list{
+  display: flex;
+  list-style: none;
+}
+
+.nav-list li{
+  flex:1;
+  height: auto;
+  transition: 0.4s;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  background-color: #9fecd9;
+}
+
+.nav-list li:hover{
+  flex: 2;
+  background-color: aqua;
+}
+
+.nav-list li a{
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-size: 2.5em;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+}
+
+.logo-space{
+  height: 100vh;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.logo-base{
+  height: 400px;
+  width: 400px;
+  display: flex;
+  background-color: #042165;
+  transform: rotate(45deg);
+  box-shadow: 20px 20px rgb(162,178,189,0.6);
+  transition: all 0.7s;
+  z-index: 5;
+}
+
+.upper-block{
+  height:290px;
+  width:160px;
+  margin: 30px 0 0 30px;
+  background-color: white;
+  border-radius: 0 0 0 150px;
+}
+
+.lower-block{
+  height:290px;
+  width:160px;
+  margin: 80px 0 0 20px;
+  background-color: white;
+  border-radius: 0 150px 0 0;
+}
+
+.imageLogo{
+  position: absolute;
+  margin: 300px 0 0 0;
+  height:60vh;
+  width:60vw;
+  z-index:1;
+  transition: all 0.8s;
+  opacity:0;
+}
+
+.logo-base:hover{
+  transform: translate(50px,50px);
+  opacity:0;
+}
+.upper-block, .lower-block{
+  transition: all 0.9s; 
+}
+
+.logo-base:hover .upper-block{
+  transform: translate(150px, -700px); 
+}
+.logo-base:hover .lower-block{
+  transform: translate(150px, 600px);
+}
+.logo-base:hover + img{
+  transform: translate(0, -200px);
+  opacity:1;
+}
+
+/* .dropZone{
+  border:"2px solid #00bfff";
+  padding: "1em";
+  text-align: "center";
+  cursor: "pointer";
+} */
+
+.dragDropArea{
+  display: flex;
+  justify-content: center;
+}
+
+.dragButtons{
+  display: flex;
+  justify-content: center;
+}
+
+.dragButtons button{
+  display: flex;
+  width: 8vw;
+  height: 4vh;
+  margin: 2%;
+  border-radius: 25px;
+  border: none;
+  background-color: #042165;
+  color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.5em;
+  letter-spacing: 0.1em;
+  align-items: center;
+  justify-content: center;
+}
+
+.commentsArea{
+  display: flex;
+  justify-content: center;
 }
