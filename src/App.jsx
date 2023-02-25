@@ -1,14 +1,37 @@
-import { Navbar, Hero, Tasks, FileUpload, CommentsForm, Footer } from './components';
+import { Auth, Navbar, Hero, Tasks, FileUpload, CommentsForm, Footer } from './components';
+import { app, database } from './firebaseConfig';
+import Cookies from 'universal-cookie';
+import { getAuth, signOut } from 'firebase/auth';
+
+const cookies = new Cookies();
+const auth = getAuth();
 
 const App = () => {
+  let authToken = cookies.get('idToken');
+
+   const handlelogout = () => {
+     signOut(auth).then(() =>{
+       console.log('signed out');
+       cookies.remove('idToken');
+       authToken = false;
+       window.location.reload();
+     })
+     .catch((err) => {
+       console.log(err)
+     })
+   }
+
+  if(!authToken) return <Auth/>
+
   return (
     <div>
-        <Navbar/>
-        <Hero/>
-        <FileUpload/>
-        <Tasks/>
-        <CommentsForm/>
-        <Footer/>
+      <Navbar/>
+      <button className='bg-gray-300 h-10 w-20 rounded' onClick={handlelogout}>Salir</button>
+      <Hero/>
+      <FileUpload/>
+      <Tasks/>
+      <CommentsForm/>
+      <Footer/>
     </div>
   )
 }

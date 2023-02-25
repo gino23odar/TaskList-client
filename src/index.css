@@ -255,3 +255,86 @@ body{
   display: flex;
   justify-content: center;
 }
+
+form button{
+  font-size:xx-large;
+  color: white;
+  background-color:#042165;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 10px;
+  padding: 2px;
+}
+form input{
+  font-size:xx-large;
+  background-color: rgb(196, 194, 194);
+  border-color: rgb(196, 194, 194);
+  border-width: 2px;
+  border-radius: 10px;
+  padding:2px;
+  margin-bottom: .5rem;
+}
+
+.form-parent{
+  perspective: 1000px;
+}
+
+.form-option{
+  background-color:#042165;
+  color: white;
+  max-width: 450px;
+  min-height: 285px;
+}
+
+.form-container{
+  max-width: 450px;
+  min-height: 285px;
+}
+
+@keyframes spin {
+  0% {
+    transform: none;
+
+  }
+  50% {
+    transform: rotateX(-89deg) translateZ(20px);
+    
+  }
+  51% {
+    transform: rotateX(90deg) translateZ(20px);
+    
+  }
+  100% {
+    transform: none;
+  
+  }
+}
+
+@keyframes spinRev {
+  0% {
+    transform: none;
+
+  }
+  50% {
+    transform: rotateX(89deg) translateZ(20px);
+    
+  }
+  51% {
+    transform: rotateX(-90deg) translateZ(20px);
+    
+  }
+  100% {
+    transform: none;
+  
+  }
+}
+
+.spin-animation {
+  animation: spin 1s forwards;
+  transform-style: preserve-3d;
+}
+
+.spinRev-animation {
+  animation: spinRev 1s forwards;
+  transform-style: preserve-3d;
+}

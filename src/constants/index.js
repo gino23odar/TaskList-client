@@ -18,7 +18,7 @@ export const navLinks = [
   title: 'Inicio'},
   {id: 'fileUpload',
   title: 'Subir'},
-  {id: 'commentsForm',
+  {id: 'taskList',
   title: 'Tareas'},
   {id: 'commentsForm',
   title: 'Opiniones?'},
