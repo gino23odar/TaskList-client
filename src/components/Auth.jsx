@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
+import { app, database } from '../firebaseConfig';
 
 const cookies = new Cookies();
 
 const Auth = () => {
+  //is this ok or should i pass auth as a prop?
   const auth = getAuth();
+  const collectionRef = collection(database, 'users');
 
   const [isSpinning, setIsSpinning] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
@@ -28,10 +32,11 @@ const Auth = () => {
         const idToken = response.user.getIdToken();
         // Store the ID token in a cookie
         cookies.set('idToken', idToken);
+        cookies.set('name', data.name);
         window.location.reload();
       })
       .catch((err) => {
-        alert(err.message)
+        console.log(err.message)
       })
   }
 
@@ -68,7 +73,7 @@ const Auth = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (data) => {
       if(data){
-        console.log("Logged In")
+        console.log("Logged In");
       }
       else {
         console.log('Not Logged In')
@@ -128,7 +133,7 @@ const Auth = () => {
               <p className='mt-6 text-2xl text-center'>Por favor utiliza tus credenciales para ingresar</p>
             </div>
           )}
-          <div className='flex justify-center'>
+          <div className='flex justify-center mt-8'>
             <p className='font-medium italic mt-5 text-center'>
               {isSignup? "Ya tienes cuenta? " : "Aun sin cuenta? "}
             </p>

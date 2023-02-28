@@ -8,7 +8,7 @@ const Hero = () => {
           <div className='upper-block'></div>
           <div className='lower-block'></div>
         </div>
-        <img src={logo} className='imageLogo'/>
+        <img src={logo} alt='logo' className='imageLogo'/>
       </div>
     </section>
   )

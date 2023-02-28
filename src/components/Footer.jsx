@@ -7,10 +7,9 @@ const Footer = () => {
       <div>
         <ul className='flex justify-center gap-4'>
           {socialMedia.map((social, index) => (
-            <li className='list-none'>
+            <li className='list-none' key={social.id}>
               <div>
                 <img
-                  key={social.id}
                   src={social.icon}
                   alt={social.id}
                   className={`w-[48px] h-[48px] object-contain cursor-pointer mb-2`}
