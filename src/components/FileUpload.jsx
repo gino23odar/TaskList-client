@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {read} from 'xlsx';
+import { app, database } from '../firebaseConfig';
+import { collection, doc, setDoc, getDoc } from 'firebase/firestore';
 
 function extractDataFromExcelFile(file) {
   return new Promise((resolve, reject) => {
@@ -43,8 +45,47 @@ function extractDataFromExcelFile(file) {
   });
 }
 
+const TaskListNames = ({ uid }) => {
+  const [taskListNames, setTaskListNames] = useState([]);
 
-const FileUpload = () => {
+  const getTaskListNames = async (uid) => {
+    const usersRef = collection(database, "users");
+    const userDocRef = doc(usersRef, uid);
+  
+    const querySnapshot = await getDoc(userDocRef, { 
+      // use select() to only fetch the taskLists field
+      select: ["taskLists"]
+    });
+  
+    const taskListNames = [];
+    const taskLists = querySnapshot.data().taskLists;
+    // loop through each task list and add the name to the array
+    for (const taskListName in taskLists) {
+      taskListNames.push(taskListName);
+    }
+    
+    return taskListNames;
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const names = await getTaskListNames(uid);
+      setTaskListNames(names);
+    };
+    fetchData();
+  }, [uid]);
+
+  return (
+    <div className='flex justify-center'>
+      {taskListNames.map((name, idx) => (
+        <div className='border-2 rounded-lg p-1' key={idx}>{name}</div>
+      ))}
+    </div>
+  );
+};
+
+
+const FileUpload = ({ uid }) => {
   const [file, setFile] = useState(null);
   const handleDrop = (e) =>{
     e.preventDefault();
@@ -59,9 +100,32 @@ const FileUpload = () => {
     e.preventDefault();
   }
 
+  // const addTasks = async (tasks, id) => {
+  //   const tasksRef = doc(database, "tasks", id);
+  
+  //   // Set the document with the array of objects
+  //   await setDoc(tasksRef, { tasks });
+  // };
+
+  const addTasks = async (tasks, uid, taskListName) => {
+    const usersRef = collection(database, "users");
+    const userDocRef = doc(usersRef, uid);
+  
+    // Set the document with the array of tasks under a task list
+    await setDoc(userDocRef, {
+      taskLists: {
+        [taskListName]: { ...tasks }
+      }
+    }, { merge: true });
+  };
+
   const handleExtract = async () => {
+    if(!file) return;
     const rows = await extractDataFromExcelFile(file);
-    console.log(rows);
+    //console.log(rows);
+    const fileName = file.name.split('.')[0];
+    console.log(fileName);
+    await addTasks(rows, uid, fileName);
   }
 
   const dropZoneStyle = {
@@ -74,6 +138,7 @@ const FileUpload = () => {
     height: "30vh",
     width: "50vw",
   };
+
   return (
     <section id='fileUpload'>
       <div className='dragDropArea'>
@@ -88,7 +153,7 @@ const FileUpload = () => {
           <button onClick={handleExtract}>Extraer</button>
           <button onClick={() => setFile(null)}>Borrar</button>
       </div>
-      {console.log(file)}
+      <TaskListNames uid={uid} />
     </section>
   )
 }

@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
-import { app, database } from '../firebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 
 const cookies = new Cookies();
 
-const Auth = () => {
-  //is this ok or should i pass auth as a prop?
-  const auth = getAuth();
-  const collectionRef = collection(database, 'users');
+const Auth = ( {authID} ) => {
+  const auth = authID;
 
   const [isSpinning, setIsSpinning] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
