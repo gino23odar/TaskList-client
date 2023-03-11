@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {read} from 'xlsx';
 import { app, database } from '../firebaseConfig';
-import { collection, doc, setDoc, getDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 function extractDataFromExcelFile(file) {
   return new Promise((resolve, reject) => {
@@ -45,47 +45,36 @@ function extractDataFromExcelFile(file) {
   });
 }
 
-const TaskListNames = ({ uid }) => {
-  const [taskListNames, setTaskListNames] = useState([]);
+//could I make this a separate component to use here and in Tasks.jsx?
+const TaskListNames = ({ tasks, setTaskListContainer, setActiveTaskList }) => {
+  const taskListNames = [];
 
-  const getTaskListNames = async (uid) => {
-    const usersRef = collection(database, "users");
-    const userDocRef = doc(usersRef, uid);
-  
-    const querySnapshot = await getDoc(userDocRef, { 
-      // use select() to only fetch the taskLists field
-      select: ["taskLists"]
-    });
-  
-    const taskListNames = [];
-    const taskLists = querySnapshot.data().taskLists;
-    // loop through each task list and add the name to the array
-    for (const taskListName in taskLists) {
-      taskListNames.push(taskListName);
-    }
-    
-    return taskListNames;
+  for (const taskListName in tasks){
+    taskListNames.push(taskListName);
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const names = await getTaskListNames(uid);
-      setTaskListNames(names);
-    };
-    fetchData();
-  }, [uid]);
+  const selectTask = (name) =>{
+    setTaskListContainer((prev) => !prev);
+    const taskName = name.toString();
+    setActiveTaskList(taskName);
+  }
+
+  const handleClick = (name) =>{
+    selectTask(name);
+  }
 
   return (
-    <div className='flex justify-center'>
+    <div className='flex justify-center gap-1'>
+      {console.log(taskListNames)}
       {taskListNames.map((name, idx) => (
-        <div className='border-2 rounded-lg p-1' key={idx}>{name}</div>
+        <div className='border-2 rounded-lg p-1 cursor-pointer' onClick={()=>handleClick(name)} key={idx}>{name}</div>
       ))}
     </div>
   );
 };
 
 
-const FileUpload = ({ uid }) => {
+const FileUpload = ({ uid, tasks, setTaskListContainer, setActiveTaskList }) => {
   const [file, setFile] = useState(null);
   const handleDrop = (e) =>{
     e.preventDefault();
@@ -93,19 +82,12 @@ const FileUpload = ({ uid }) => {
     if (file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) {
       setFile(file);
     } else {
-      alert("Invalid file type. Only Excel files are accepted.");
+      alert("Tipo de archivo invalido. Este sistema solo acepta archivos Excel.");
     }
   }
   const handleDragOver = (e) =>{
     e.preventDefault();
   }
-
-  // const addTasks = async (tasks, id) => {
-  //   const tasksRef = doc(database, "tasks", id);
-  
-  //   // Set the document with the array of objects
-  //   await setDoc(tasksRef, { tasks });
-  // };
 
   const addTasks = async (tasks, uid, taskListName) => {
     const usersRef = collection(database, "users");
@@ -114,7 +96,10 @@ const FileUpload = ({ uid }) => {
     // Set the document with the array of tasks under a task list
     await setDoc(userDocRef, {
       taskLists: {
-        [taskListName]: { ...tasks }
+        [taskListName]: { 
+          ...tasks,
+          timestamp: serverTimestamp()
+        }
       }
     }, { merge: true });
   };
@@ -153,7 +138,11 @@ const FileUpload = ({ uid }) => {
           <button onClick={handleExtract}>Extraer</button>
           <button onClick={() => setFile(null)}>Borrar</button>
       </div>
-      <TaskListNames uid={uid} />
+      <TaskListNames 
+        tasks={tasks}
+        setTaskListContainer={setTaskListContainer}
+        setActiveTaskList={setActiveTaskList}
+      />
     </section>
   )
 }
