@@ -54,9 +54,9 @@ const TaskListNames = ({ tasks, setTaskListContainer, setActiveTaskList }) => {
   }
 
   const selectTask = (name) =>{
-    setTaskListContainer((prev) => !prev);
     const taskName = name.toString();
     setActiveTaskList(taskName);
+    setTaskListContainer((prev) => !prev);
   }
 
   const handleClick = (name) =>{
