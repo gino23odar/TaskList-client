@@ -64,10 +64,10 @@ const TaskListNames = ({ tasks, setTaskListContainer, setActiveTaskList }) => {
   }
 
   return (
-    <div className='flex justify-center gap-1'>
+    <div className='flex justify-center gap-1 pb-6'>
       {console.log(taskListNames)}
       {taskListNames.map((name, idx) => (
-        <div className='border-2 rounded-lg p-1 cursor-pointer' onClick={()=>handleClick(name)} key={idx}>{name}</div>
+        <div className='border-2 rounded-lg p-1 cursor-pointer bg-white text-2xl' onClick={()=>handleClick(name)} key={idx}>{name}</div>
       ))}
     </div>
   );
@@ -115,23 +115,26 @@ const FileUpload = ({ uid, tasks, setTaskListContainer, setActiveTaskList }) => 
 
   const dropZoneStyle = {
     display: "flex",
-    border: file ? "2px solid #00bfff" : "2px dashed #959595",
+    border: file ? "2px solid #00bfff" : "6px dashed #000000",
     padding: "1em",
     justifyContent: "center",
     alignItems: "center",
     cursor: "pointer",
     height: "30vh",
     width: "50vw",
+    backgroundColor: file ? "rgba(4, 33, 121, 0.9)" : "rgba(149, 149, 149, 0.1)",
   };
 
   return (
-    <section id='fileUpload'>
+    <section id='fileUpload' className='patternBackground'>
       <div className='dragDropArea'>
         <div 
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           style={dropZoneStyle}>
-            {file ? `File: ${file.name}` : 'Drop Files Here'}
+            <div className='bg-white/[.8] font-extrabold text-4xl rounded-3xl p-2'>
+              {file ? `File: ${file.name}` : 'Suelta tus archivos aqui'}
+            </div>
         </div>
       </div>
       <div className='dragButtons'>

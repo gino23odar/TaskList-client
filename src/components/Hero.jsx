@@ -2,7 +2,7 @@ import {logo} from '../assets';
 
 const Hero = () => {
   return (
-    <section id='start'>
+    <section id='start' >
       <div className='logo-space'>
         <div className='logo-base'>
           <div className='upper-block'></div>

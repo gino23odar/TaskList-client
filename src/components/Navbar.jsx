@@ -9,13 +9,13 @@ const Navbar = () => {
       <div className={`${toggle? 'nav-toggle clicked' : 'nav-toggle'}`} onClick={() => setToggle((prevState)=>!prevState)}>
         <span> </span>
       </div>
-      <nav className={`${toggle? 'nav-in' :'nav-out'}`}>
+      <nav className={`${toggle? 'nav-in patternBackground' :'nav-out'}`}>
         <ul className='nav-list'>
           {navLinks.map((nav, index) => (
             <li
               key={nav.id}
               className={
-                `${active === nav.title ? "text-blue-500" : "text-purple-700"}
+                `${active === nav.title ? "text-rose-500" : "text-slate-500"}
                  ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
               onClick={() => setActive(nav.title)}
             >

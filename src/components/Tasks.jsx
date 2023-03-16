@@ -14,19 +14,24 @@ const TaskDisplay = ({tasks, activeTaskList})=>{
   let columnKeys = Object.keys(currTasks[1]);
   
   return (
-    <div>
-      <div style={{ display: 'flex' }}>
+    <div className="taskListTable table w-full table-fixed border-separate border-spacing-2 border border-slate-600">
+      <div className="taskListHeader table-row border border-slate-600">
         {columnKeys.map((columnKey) => (
-          <div key={columnKey}>
+          <div
+            key={columnKey}
+            className="table-cell font-bold py-2 px-4"
+          >
             {columnKey}
           </div>
         ))}
       </div>
-      {/* add drag and options buttons to this divs */}
-      {currTasks.map((task) => (
-        <div style={{ display: 'flex' }} key={task.id}>
+      {currTasks.map((task, index) => (
+        <div
+          key={index}
+          className='table-row'
+        >
           {columnKeys.map((columnKey) => (
-            <div key={columnKey}>
+            <div key={columnKey} className="table-cell py-1 px-4 border">
               {task[columnKey]}
             </div>
           ))}
@@ -47,23 +52,7 @@ const Tasks = ({uid, tasks, setTaskListContainer, activeTaskList, setActiveTaskL
   const manageTasks = (i) =>{
     setActiveTaskList(i);
   }
-  // //get tasks from active tasklist => currTasks
-  // const getCurrTasks = (taskList) =>{
-  //   const list = tasks[taskList];
-  //   //think how to fix this object to be rendered and implement an order to it.
-  //   console.log(list);
-  //   const tasksOnList = [];
-  //   for (const key in list) {
-  //     if (key !== "timestamp") {
-  //       //should I iterate on every atribute to make an array of arrays? 
-  //       //if so, how would i handle the pairs for every field
-  //       //maybe it's easier to keep handling it as an object?
-  //       tasksOnList.push(list[key]);
-  //     }
-  //   }
-  //   console.log(Object.keys(tasksOnList[1]));
-  //   setCurrTasks(tasksOnList);
-  // }
+
   //function to add tasks to active list
   //function to delete tasks from active list
   //function to update tasks from active list => in SingleTask component?
@@ -73,11 +62,13 @@ const Tasks = ({uid, tasks, setTaskListContainer, activeTaskList, setActiveTaskL
   return (
     <section id='tasks'>
       <div>
-        <div className='taskListNames'>
-          <p>hello</p>
-          {taskListNames && taskListNames.map((i, idx) =>(
-            <div key={idx} onClick={() => manageTasks(i)}>{i}</div>
-          ))}
+        <div className='grid grid-cols-5 pt-6'>
+          <h1 className='latoFont text-3xl font-black pl-6'>Tus Listas:</h1>
+          <div className='col-span-4 flex justify-start pb-4 pl-6 pr-12 gap-2'>
+            {taskListNames && taskListNames.map((i, idx) =>(
+              <div className='border-2 rounded-md p-2' key={idx} onClick={() => manageTasks(i)}>{i}</div>
+            ))}
+          </div>
         </div>
         <div className='tasks'>
           <TaskDisplay tasks={tasks} activeTaskList={activeTaskList} />
