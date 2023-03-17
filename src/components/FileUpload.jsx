@@ -127,6 +127,9 @@ const FileUpload = ({ uid, tasks, setTaskListContainer, setActiveTaskList }) => 
 
   return (
     <section id='fileUpload' className='patternBackground'>
+      <div className='warningBarsCont'>
+        <div className='warningBar'></div>
+      </div>
       <div className='dragDropArea'>
         <div 
           onDrop={handleDrop}
@@ -146,6 +149,9 @@ const FileUpload = ({ uid, tasks, setTaskListContainer, setActiveTaskList }) => 
         setTaskListContainer={setTaskListContainer}
         setActiveTaskList={setActiveTaskList}
       />
+      <div className='warningBarsCont'>
+        <div className='warningBar'></div>
+      </div>
     </section>
   )
 }

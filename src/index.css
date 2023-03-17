@@ -369,3 +369,51 @@ form input{
 .latoFont{
   font-family: 'Lato', sans-serif;
 }
+
+@keyframes slide {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 1250px;
+  }
+}
+
+.warningBarsCont{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.warningBarsCont .warningBar {
+  min-height: 40px;
+  border-radius: 10px;
+  width: calc(260px * 8);
+  box-shadow: 0px 10px 13px -6px rgba(44, 62, 80, 1);
+  background-color: #121920;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 40px,
+    #FFCC00 40px,
+    #FFCC00 79px
+  );
+  animation-name: slide;
+  animation-duration: 12s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: background-position;
+}
+
+@media only screen and (max-width: 450px) {
+  .warningBarsCont .warningBar {
+    width: calc(113px * 4);
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .warningBarsCont .warningBar {
+    width: calc(113px * 3);
+  }
+}
