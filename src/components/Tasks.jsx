@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { app, database } from '../firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import { ReactComponent as Cog } from '../assets/cog.svg';
 
 const TaskDisplay = ({tasks, activeTaskList})=>{
   const list = tasks[activeTaskList];
@@ -43,11 +44,28 @@ const TaskDisplay = ({tasks, activeTaskList})=>{
 
 const Tasks = ({uid, tasks, setTaskListContainer, activeTaskList, setActiveTaskList}) => {
   //get task names from prop tasks => taskListNames
-  const taskListNames = [];
+  const taskListNamesAndTimestamp = [];
 
   for (const taskListName in tasks){
-    taskListNames.push(taskListName);
+    const timestamp = tasks[taskListName].timestamp;
+    taskListNamesAndTimestamp.push([taskListName, timestamp]);
   }
+
+  //some of the older lists have no timestamp so they could cause an 
+  //error if we called .toMillis() on the undefined or not set timestamp
+  const taskListNames = taskListNamesAndTimestamp.sort((a, b) => {
+    const timestampA = a[1];
+    const timestampB = b[1];
+    if (timestampA && timestampB) {
+      return timestampA.toMillis() - timestampB.toMillis();
+    } else if (timestampA) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }).map((taskList) => {
+    return taskList[0];
+  });
   //set active tasklist => activeTaskList => manageTasks
   const manageTasks = (i) =>{
     setActiveTaskList(i);
@@ -68,6 +86,19 @@ const Tasks = ({uid, tasks, setTaskListContainer, activeTaskList, setActiveTaskL
             {taskListNames && taskListNames.map((i, idx) =>(
               <div className='border-2 rounded-md p-2' key={idx} onClick={() => manageTasks(i)}>{i}</div>
             ))}
+          </div>
+        </div>
+        <div className='flex flex-col'>
+          <hr className='border-black border-1'/>
+          <div className='flex items-center'>
+            <Cog />
+            {activeTaskList? (
+              <div className='font-bold text-4xl pb-2'>
+                {activeTaskList}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <div className='tasks'>

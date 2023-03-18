@@ -47,11 +47,28 @@ function extractDataFromExcelFile(file) {
 
 //could I make this a separate component to use here and in Tasks.jsx?
 const TaskListNames = ({ tasks, setTaskListContainer, setActiveTaskList }) => {
-  const taskListNames = [];
+  const taskListNamesAndTimestamp = [];
 
   for (const taskListName in tasks){
-    taskListNames.push(taskListName);
+    const timestamp = tasks[taskListName].timestamp;
+    taskListNamesAndTimestamp.push([taskListName, timestamp]);
   }
+
+  //some of the older lists have no timestamp so they could cause an 
+  //error if we called .toMillis() on the undefined or not set timestamp
+  const taskListNames = taskListNamesAndTimestamp.sort((a, b) => {
+    const timestampA = a[1];
+    const timestampB = b[1];
+    if (timestampA && timestampB) {
+      return timestampA.toMillis() - timestampB.toMillis();
+    } else if (timestampA) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }).map((taskList) => {
+    return taskList[0];
+  });
 
   const selectTask = (name) =>{
     const taskName = name.toString();

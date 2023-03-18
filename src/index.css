@@ -435,3 +435,32 @@ form input{
     width: calc(113px * 3);
   }
 }
+
+svg {
+  animation: rotate 2s infinite 1s linear;
+}
+svg path {
+  animation: stock 2s linear ;
+  animation-fill-mode: forwards;
+}
+@keyframes rotate  {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes stock {
+  from {
+    stroke-dasharray:10,1452;
+  }
+  to {
+    stroke-dasharray:1450,1452;
+  }
+}
+circle {
+  stroke-dasharray: 0,1452;
+  animation: stock 2s ease 2s;
+  animation-fill-mode: forwards;
+}
