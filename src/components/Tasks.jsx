@@ -71,9 +71,15 @@ const Tasks = ({uid, tasks, setTaskListContainer, activeTaskList, setActiveTaskL
           </div>
         </div>
         <div className='tasks'>
-          <TaskDisplay tasks={tasks} activeTaskList={activeTaskList} />
+          {activeTaskList ? (
+            <TaskDisplay tasks={tasks} activeTaskList={activeTaskList} />
+          ) : (
+            <div> NO TASKSLIST CHOSEN </div>
+          )}
         </div>
       </div>
+      {/* try to add to footer to render conditionally on setTaskListContainer */}
+      <button onClick={()=>{if(setTaskListContainer) setTaskListContainer(prev => !prev)}}>Inicio</button>
     </section>
   )
 }

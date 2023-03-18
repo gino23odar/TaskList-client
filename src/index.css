@@ -8,6 +8,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html{
   scroll-behavior: smooth;
 }
 
@@ -23,8 +26,6 @@ body{
   background-repeat: repeat;
   background-position: bottom center;
 }
-
-
 
 .nav-toggle{
   width:60px;
@@ -163,6 +164,17 @@ body{
   letter-spacing: 0.2em;
 }
 
+#moac{
+  position: relative;
+  min-height: 100vh;
+}
+
+#footer{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
 .logo-space{
   height: 100vh;
   width: auto;
@@ -264,10 +276,16 @@ body{
   justify-content: center;
 }
 
+#commentsForm{
+  position: relative;
+  padding-bottom: 2rem;
+}
+
 .commentsArea{
   display: flex;
   justify-content: center;
   padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 form button{

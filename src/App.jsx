@@ -82,15 +82,22 @@ const App = () => {
   }, [uid]);
 
   return (
-    <div>
-      <Navbar/>
+    <div id='moac'>
+      {user ? (
+        <Navbar 
+        taskListContainer={taskListContainer}
+        setTaskListContainer={setTaskListContainer}
+      />
+      ) : (
+        <></>
+      )}   
       {taskListContainer ? (
         <Tasks 
-        uid={uid} 
-        tasks={allTaskLists}
-        setTaskListContainer={setTaskListContainer}
-        activeTaskList={activeTaskList}
-        setActiveTaskList={setActiveTaskList}
+          uid={uid} 
+          tasks={allTaskLists}
+          setTaskListContainer={setTaskListContainer}
+          activeTaskList={activeTaskList}
+          setActiveTaskList={setActiveTaskList}
         />
       ) : user ? (
         <>
@@ -103,10 +110,14 @@ const App = () => {
             setActiveTaskList={setActiveTaskList}
           />
           <CommentsForm/>
-          <Footer/>
         </>
       ) : (
         <Auth authID={auth} />
+      )}
+      {user ? (
+        <Footer/>
+      ) : (
+        <></>
       )}
     </div>
   )
